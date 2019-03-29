@@ -13,7 +13,7 @@ public class RepoDetailActivity extends AppCompatActivity {
     private TextView mRepoNameTV;
     private TextView mRepoStarsTV;
     private TextView mRepoDescriptionTV;
-    private GitHubUtils.GitHubRepo mRepo;
+    private LyricUtils.Song mSongs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +24,11 @@ public class RepoDetailActivity extends AppCompatActivity {
         mRepoStarsTV = findViewById(R.id.tv_repo_stars);
         mRepoDescriptionTV = findViewById(R.id.tv_repo_description);
 
-        mRepo = null;
+        mSongs = null;
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(GitHubUtils.EXTRA_GITHUB_REPO)) {
-            mRepo = (GitHubUtils.GitHubRepo) intent.getSerializableExtra(GitHubUtils.EXTRA_GITHUB_REPO);
-            mRepoNameTV.setText(mRepo.full_name);
-            mRepoStarsTV.setText("" + mRepo.stargazers_count);
-            mRepoDescriptionTV.setText(mRepo.description);
+        if (intent != null && intent.hasExtra(LyricUtils.EXTRA_LYRIC_REPO)) {
+            mSongs = (LyricUtils.Song) intent.getSerializableExtra(LyricUtils.EXTRA_LYRIC_REPO);
+            mRepoNameTV.setText(mSongs.title_with_featured);
         }
     }
 
@@ -44,7 +42,6 @@ public class RepoDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_view_on_web:
-                viewRepoOnWeb();
                 return true;
             case R.id.action_share:
                 shareRepo();
@@ -54,19 +51,9 @@ public class RepoDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void viewRepoOnWeb() {
-        if (mRepo != null) {
-            Uri repoURI = Uri.parse(mRepo.html_url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, repoURI);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            }
-        }
-    }
-
     public void shareRepo() {
-        if (mRepo != null) {
-            String shareText = getString(R.string.share_repo_text, mRepo.full_name, mRepo.html_url);
+        if (mSongs != null) {
+            String shareText = mSongs.title_with_featured;
             ShareCompat.IntentBuilder.from(this)
                     .setType("text/plain")
                     .setText(shareText)

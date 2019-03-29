@@ -7,27 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class GitHubSearchAdapter extends RecyclerView.Adapter<GitHubSearchAdapter.SearchResultViewHolder> {
-    private GitHubUtils.GitHubRepo[] mRepos;
+public class SongSearchAdapter extends RecyclerView.Adapter<SongSearchAdapter.SearchResultViewHolder> {
+    private LyricUtils.Song[] mSongs;
     OnSearchItemClickListener mSeachItemClickListener;
 
     public interface OnSearchItemClickListener {
-        void onSearchItemClick(GitHubUtils.GitHubRepo repo);
+        void onSearchItemClick(LyricUtils.Song song);
     }
 
-    GitHubSearchAdapter(OnSearchItemClickListener searchItemClickListener) {
+    SongSearchAdapter(OnSearchItemClickListener searchItemClickListener) {
         mSeachItemClickListener = searchItemClickListener;
     }
 
-    public void updateSearchResults(GitHubUtils.GitHubRepo[] repos) {
-        mRepos = repos;
+    public void updateSearchResults(LyricUtils.Song[] repos) {
+        mSongs = repos;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (mRepos != null) {
-            return mRepos.length;
+        if (mSongs != null) {
+            return mSongs.length;
         } else {
             return 0;
         }
@@ -43,7 +43,7 @@ public class GitHubSearchAdapter extends RecyclerView.Adapter<GitHubSearchAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
-        holder.bind(mRepos[position]);
+        holder.bind(mSongs[position]);
     }
 
     class SearchResultViewHolder extends RecyclerView.ViewHolder {
@@ -56,14 +56,14 @@ public class GitHubSearchAdapter extends RecyclerView.Adapter<GitHubSearchAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GitHubUtils.GitHubRepo searchResult = mRepos[getAdapterPosition()];
+                    LyricUtils.Song searchResult = mSongs[getAdapterPosition()];
                     mSeachItemClickListener.onSearchItemClick(searchResult);
                 }
             });
         }
 
-        public void bind(GitHubUtils.GitHubRepo repo) {
-            mSearchResultTV.setText(repo.full_name);
+        public void bind(LyricUtils.Song song) {
+            mSearchResultTV.setText(song.title_with_featured);
         }
     }
 }
