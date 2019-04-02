@@ -7,8 +7,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -20,54 +18,37 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
-        implements SongSearchAdapter.OnSearchItemClickListener, LoaderManager.LoaderCallbacks<String> {
+        implements LoaderManager.LoaderCallbacks<String> {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final String SONGS_ARRAY_KEY = "songLyrics";
-    private static final String SEARCH_URL_KEY = "songSearchURL";
+    private static final String CURR_ARRAY_KEY = "currencyConversion";
+    private static final String SEARCH_URL_KEY = "currencySearchURL";
 
-    private static final int LYRIC_SEARCH_LOADER_ID = 0;
+    private static final int CURR_SEARCH_LOADER_ID = 0;
 
-    private RecyclerView mSearchResultsRV;
-    private EditText mSearchBoxET;
+    //private TextView mResultBoxTV;
     private TextView mLoadingErrorTV;
     private ProgressBar mLoadingPB;
-    private SongSearchAdapter mSongSearchAdapter;
+//    private CurrSearchAdapter mCurrSearchAdapter;
 
-    private LyricUtils.Song[] mSongs;
-
-
+    private CurrUtils.Rate mRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSearchBoxET = findViewById(R.id.et_search_box);
-        mSearchResultsRV = findViewById(R.id.rv_search_results);
         mLoadingErrorTV = findViewById(R.id.tv_loading_error);
         mLoadingPB = findViewById(R.id.pb_loading);
-
-        mSearchResultsRV.setLayoutManager(new LinearLayoutManager(this));
-        mSearchResultsRV.setHasFixedSize(true);
-
-        mSongSearchAdapter = new SongSearchAdapter(this);
-        mSearchResultsRV.setAdapter(mSongSearchAdapter);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(SONGS_ARRAY_KEY)) {
-            mSongs = (LyricUtils.Song[]) savedInstanceState.getSerializable(SONGS_ARRAY_KEY);
-            mSongSearchAdapter.updateSearchResults(mSongs);
-        }
-
-        getSupportLoaderManager().initLoader(LYRIC_SEARCH_LOADER_ID, null, this);
+        // LAYOUT FOR RESULT TV
 
         Button searchButton = findViewById(R.id.btn_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchQuery = mSearchBoxET.getText().toString();
-                if (!TextUtils.isEmpty(searchQuery)) {
-                    doSongSearch(searchQuery);
+                String baseCurr = "USD";
+                if (!TextUtils.isEmpty(baseCurr)) {
+                    doSongSearch(baseCurr);
                 }
             }
         });
@@ -92,41 +73,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void doSongSearch(String query) {
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        String sort = preferences.getString(
-//                getString(R.string.pref_sort_key), getString(R.string.pref_sort_default)
-//        );
-//        String language = preferences.getString(
-//                getString(R.string.pref_language_key), getString(R.string.pref_language_default)
-//        );
-//        String user = preferences.getString(getString(R.string.pref_user_key), "");
-//        boolean searchInName = preferences.getBoolean(getString(R.string.pref_in_name_key), true);
-//        boolean searchInDescription = preferences.getBoolean(getString(R.string.pref_in_description_key), true);
-//        boolean searchInReadme = preferences.getBoolean(getString(R.string.pref_in_readme_key), false);
-
-        String url = LyricUtils.buildLyricSearchURL(query);
+    private void doSongSearch(String base) {
+        String url = CurrUtils.buildConversionSearchURL(base);
         Log.d(TAG, "querying search URL: " + url);
-
         Bundle args = new Bundle();
         args.putString(SEARCH_URL_KEY, url);
         mLoadingPB.setVisibility(View.VISIBLE);
-        getSupportLoaderManager().restartLoader(LYRIC_SEARCH_LOADER_ID, args, this);
-    }
-
-    @Override
-    public void onSearchItemClick(LyricUtils.Song song) {
-        Intent intent = new Intent(this, RepoDetailActivity.class);
-        intent.putExtra(LyricUtils.EXTRA_LYRIC_REPO, song);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mSongs != null) {
-            outState.putSerializable(SONGS_ARRAY_KEY, mSongs);
-        }
+        getSupportLoaderManager().restartLoader(CURR_SEARCH_LOADER_ID, args, this);
     }
 
     @NonNull
@@ -136,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         if (bundle != null) {
             url = bundle.getString(SEARCH_URL_KEY);
         }
-        return new SongSearchLoader(this, url);
+        return new CurrSearchLoader(this, url);
     }
 
     @Override
@@ -144,12 +97,12 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "loader finished loading");
         if (s != null) {
             mLoadingErrorTV.setVisibility(View.INVISIBLE);
-            mSearchResultsRV.setVisibility(View.VISIBLE);
-            mSongs = LyricUtils.parseSongSearchResults(s);
-            mSongSearchAdapter.updateSearchResults(mSongs);
+            //mResultBoxTV.setVisibility(View.VISIBLE);
+            mRate = CurrUtils.parseCurrConversionResults(s);
+            Log.d(TAG, "RATE is: "+mRate);
         } else {
             mLoadingErrorTV.setVisibility(View.VISIBLE);
-            mSearchResultsRV.setVisibility(View.INVISIBLE);
+            //mResultBoxTV.setVisibility(View.INVISIBLE);
         }
         mLoadingPB.setVisibility(View.INVISIBLE);
     }

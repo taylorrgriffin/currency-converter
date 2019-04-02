@@ -7,14 +7,14 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class SongSearchLoader extends AsyncTaskLoader<String> {
+public class CurrSearchLoader extends AsyncTaskLoader<String> {
 
-    private final static String TAG = SongSearchLoader.class.getSimpleName();
+    private final static String TAG = CurrSearchLoader.class.getSimpleName();
 
     private String mSearchResultsJSON;
     private String mURL;
 
-    SongSearchLoader(Context context, String url) {
+    CurrSearchLoader(Context context, String url) {
         super(context);
         mURL = url;
     }
@@ -35,7 +35,7 @@ public class SongSearchLoader extends AsyncTaskLoader<String> {
     @Override
     public String loadInBackground() {
         if (mURL != null) {
-            Log.d(TAG, "loading results from AUDD with URL: " + mURL);
+            Log.d(TAG, "loading results from ExchangeRates with URL: " + mURL);
             String results = null;
             try {
                 results = NetworkUtils.doHTTPGet(mURL);
