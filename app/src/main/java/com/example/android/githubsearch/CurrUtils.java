@@ -24,6 +24,7 @@ public class CurrUtils {
     }
 
     public static class Rate implements Serializable {
+
         public String BGN;
         public String NZD;
         public String ILS;
@@ -58,32 +59,23 @@ public class CurrUtils {
         public String SEK;
         public String EUR;
 
-//        public String getNum(Field str){
-//            str.setAccessible(true);
-//            String result = str.get(this).toString();
-//        }
-
 
     }
 
-//    public static void getConversion(Rate rate, String str){
-//        String key = "USD";
-//        Field [] fields = rate.getClass().getFields();
-//        for (Field f: fields){
-//            if(f.getName() == str){
-//                f.setAccessible(true);
-//                //f.get(rate);
-//                Log.d(TAG, "Found the field" + f.toString());
-//            }
-//        }
-////        for(int i=0; i<rate.getClass().getFields().length; i++){
-//////            if (){
-//////
-//////            }
-//////        }
-//
-//       // String value = rate.getClass().getDeclaredField(key);
-//    }
+    public static float getConversion(Rate rate, String str){
+
+        try{
+            Field field = rate.getClass().getDeclaredField(str);
+            field.setAccessible(true);
+            String val = (String) field.get(rate);
+            Log.d(TAG, "Found the field " + val);
+            return Float.parseFloat(val);
+        } catch(Exception e){
+            Log.d(TAG, e.getMessage());
+            return 0;
+        }
+
+    }
 
     public static String buildConversionSearchURL(String base) {
         return Uri.parse(CURR_SEARCH_BASE_URL).buildUpon()

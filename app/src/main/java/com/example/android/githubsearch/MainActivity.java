@@ -193,8 +193,15 @@ public class MainActivity extends AppCompatActivity
             //mResultBoxTV.setVisibility(View.VISIBLE);
             mRate = CurrUtils.parseCurrConversionResults(s);
             String dest = mDestCurrSP.getSelectedItem().toString();
-            //mRate[dest]
-           // CurrUtils.getConversion(mRate, dest);
+            float f = CurrUtils.getConversion(mRate, dest);
+            String user_val = mInputValueET.getText().toString();
+            float user_float = Float.parseFloat(user_val);
+
+            float final_float = f * user_float;
+            String final_conversion = Float.toString(final_float);
+            mResultTV.setVisibility(View.VISIBLE);
+            mResultTV.setText(final_conversion);
+
         } else {
             mLoadingErrorTV.setVisibility(View.VISIBLE);
             //mResultBoxTV.setVisibility(View.INVISIBLE);
