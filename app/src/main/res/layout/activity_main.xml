@@ -9,27 +9,41 @@
     tools:context="com.example.android.githubsearch.MainActivity">
 
     <EditText
-        android:id="@+id/et_search_box"
+        android:id="@+id/et_input_curr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:hint="@string/search_box_hint"/>
+        android:hint="Enter Amount"
+        android:inputType="numberDecimal"/>
+
+    <Spinner
+        android:id="@+id/sp_base_curr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog"
+        />
+
+    <Spinner
+        android:id="@+id/sp_dest_curr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dialog" />
 
     <Button
         android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_button_text"
+        android:text="Convert"
         android:textSize="22sp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_search_results"
+        <TextView
+            android:id="@+id/tv_conversion_result"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/tv_loading_error"
@@ -38,7 +52,7 @@
             android:textSize="20sp"
             android:padding="16dp"
             android:visibility="invisible"
-            android:text="@string/loading_error" />
+            android:text="Unable to convert, please check internet connection and try again." />
 
         <ProgressBar
             android:id="@+id/pb_loading"

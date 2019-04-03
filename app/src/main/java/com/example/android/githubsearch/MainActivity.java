@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
@@ -26,10 +28,12 @@ public class MainActivity extends AppCompatActivity
 
     private static final int CURR_SEARCH_LOADER_ID = 0;
 
-    //private TextView mResultBoxTV;
+    private EditText mInputValueET;
+    private Spinner mBaseCurrSP;
+    private Spinner mDestCurrSP;
+    private TextView mResultTV;
     private TextView mLoadingErrorTV;
     private ProgressBar mLoadingPB;
-//    private CurrSearchAdapter mCurrSearchAdapter;
 
     private CurrUtils.Rate mRate;
 
@@ -40,16 +44,105 @@ public class MainActivity extends AppCompatActivity
 
         mLoadingErrorTV = findViewById(R.id.tv_loading_error);
         mLoadingPB = findViewById(R.id.pb_loading);
-        // LAYOUT FOR RESULT TV
+        mInputValueET = findViewById(R.id.et_input_curr);
+        mBaseCurrSP = findViewById(R.id.sp_base_curr);
+        mDestCurrSP = findViewById(R.id.sp_dest_curr);
+        mResultTV = findViewById(R.id.tv_conversion_result);
+
+        //Populate Spinners with conversion options.
+        String[] baseItems = new String[]{
+                "From:",
+                "BGN",
+                "NZD",
+                "ILS",
+                "RUB",
+                "CAD",
+                "USD",
+                "PHP",
+                "CHF",
+                "AUD",
+                "JPY",
+                "TRY",
+                "HDK",
+                "MYR",
+                "HRK",
+                "CZK",
+                "IDR",
+                "DKK",
+                "NOK",
+                "HUF",
+                "GBP",
+                "MXN",
+                "THB",
+                "ISK",
+                "ZAR",
+                "BRL",
+                "SGD",
+                "PLN",
+                "INR",
+                "KRW",
+                "RON",
+                "CNY",
+                "SEK",
+                "EUR"
+        };
+
+        String[] destItems = new String[]{
+                "To:",
+                "BGN",
+                "NZD",
+                "ILS",
+                "RUB",
+                "CAD",
+                "USD",
+                "PHP",
+                "CHF",
+                "AUD",
+                "JPY",
+                "TRY",
+                "HDK",
+                "MYR",
+                "HRK",
+                "CZK",
+                "IDR",
+                "DKK",
+                "NOK",
+                "HUF",
+                "GBP",
+                "MXN",
+                "THB",
+                "ISK",
+                "ZAR",
+                "BRL",
+                "SGD",
+                "PLN",
+                "INR",
+                "KRW",
+                "RON",
+                "CNY",
+                "SEK",
+                "EUR"
+        };
+
+        ArrayAdapter<String> baseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, baseItems);
+        ArrayAdapter<String> destAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, destItems);
+
+        mBaseCurrSP.setAdapter(baseAdapter);
+        mDestCurrSP.setAdapter(destAdapter);
+
+        mBaseCurrSP.setSelection(0);
+        mDestCurrSP.setSelection(0);
 
         Button searchButton = findViewById(R.id.btn_search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String baseCurr = "USD";
-                if (!TextUtils.isEmpty(baseCurr)) {
-                    doSongSearch(baseCurr);
+                if (mBaseCurrSP.getSelectedItemPosition() != 0
+                        && mDestCurrSP.getSelectedItemPosition() != 0
+                        && !TextUtils.isEmpty(mInputValueET.getText())){
+                    getCurrRates(mBaseCurrSP.getSelectedItem().toString());
                 }
+
             }
         });
     }
@@ -73,7 +166,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void doSongSearch(String base) {
+    private void getCurrRates(String base) {
         String url = CurrUtils.buildConversionSearchURL(base);
         Log.d(TAG, "querying search URL: " + url);
         Bundle args = new Bundle();

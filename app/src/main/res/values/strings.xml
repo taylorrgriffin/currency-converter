@@ -52,4 +52,10 @@
     <!-- Strings for user preference -->
     <string name="pref_user_key" translatable="false">pref_user</string>
     <string name="pref_user_title">GitHub user</string>
+
+    <!-- Strings for Spinners -->
+    <string name="dest_curr">To:</string>
+    <string name="base_curr">From:</string>
+
+
 </resources>
