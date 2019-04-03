@@ -192,7 +192,9 @@ public class MainActivity extends AppCompatActivity
             mLoadingErrorTV.setVisibility(View.INVISIBLE);
             //mResultBoxTV.setVisibility(View.VISIBLE);
             mRate = CurrUtils.parseCurrConversionResults(s);
-            Log.d(TAG, "RATE is: "+mRate);
+            String dest = mDestCurrSP.getSelectedItem().toString();
+            //mRate[dest]
+           // CurrUtils.getConversion(mRate, dest);
         } else {
             mLoadingErrorTV.setVisibility(View.VISIBLE);
             //mResultBoxTV.setVisibility(View.INVISIBLE);

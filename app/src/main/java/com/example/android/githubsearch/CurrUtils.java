@@ -1,12 +1,15 @@
 package com.example.android.githubsearch;
 
 import android.net.Uri;
+import android.nfc.Tag;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class CurrUtils {
@@ -14,6 +17,7 @@ public class CurrUtils {
     private final static String CURR_SEARCH_BASE_PARAM = "base";
 
     public static final String EXTRA_CURR_REPO = "CurrUtils.Lyric";
+    private static final String TAG = CurrUtils.class.getSimpleName();
 
     public static class CurrConversionResults {
         public Rate rates;
@@ -53,7 +57,33 @@ public class CurrUtils {
         public String CNY;
         public String SEK;
         public String EUR;
+
+//        public String getNum(Field str){
+//            str.setAccessible(true);
+//            String result = str.get(this).toString();
+//        }
+
+
     }
+
+//    public static void getConversion(Rate rate, String str){
+//        String key = "USD";
+//        Field [] fields = rate.getClass().getFields();
+//        for (Field f: fields){
+//            if(f.getName() == str){
+//                f.setAccessible(true);
+//                //f.get(rate);
+//                Log.d(TAG, "Found the field" + f.toString());
+//            }
+//        }
+////        for(int i=0; i<rate.getClass().getFields().length; i++){
+//////            if (){
+//////
+//////            }
+//////        }
+//
+//       // String value = rate.getClass().getDeclaredField(key);
+//    }
 
     public static String buildConversionSearchURL(String base) {
         return Uri.parse(CURR_SEARCH_BASE_URL).buildUpon()
