@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity
                 "EUR"
         };
 
-        ArrayAdapter<String> baseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, baseItems);
-        ArrayAdapter<String> destAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, destItems);
+        ArrayAdapter<String> baseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, baseItems);
+        ArrayAdapter<String> destAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, destItems);
 
         mBaseCurrSP.setAdapter(baseAdapter);
         mDestCurrSP.setAdapter(destAdapter);
