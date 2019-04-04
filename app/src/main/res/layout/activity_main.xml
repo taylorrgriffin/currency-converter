@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/tv_loading_error"
+            android:id="@+id/tv_network_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -54,6 +54,14 @@
             android:visibility="invisible"
             android:text="Unable to convert, please check internet connection and try again." />
 
+        <TextView
+            android:id="@+id/tv_input_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="16dp"
+            android:visibility="invisible"
+            android:text="Invalid Input, please select a To/From currency and enter a valid amount to convert." />
         <ProgressBar
             android:id="@+id/pb_loading"
             android:layout_width="72dp"

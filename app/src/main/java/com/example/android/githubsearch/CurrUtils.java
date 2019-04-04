@@ -72,9 +72,8 @@ public class CurrUtils {
             return Float.parseFloat(val);
         } catch(Exception e){
             Log.d(TAG, e.getMessage());
-            return 0;
+            return (float) 0.0;
         }
-
     }
 
     public static String buildConversionSearchURL(String base) {

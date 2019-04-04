@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity
     private Spinner mBaseCurrSP;
     private Spinner mDestCurrSP;
     private TextView mResultTV;
-    private TextView mLoadingErrorTV;
+    private TextView mNetworkErrorTV;
+    private TextView mInputErrorTV;
     private ProgressBar mLoadingPB;
 
     private CurrUtils.Rate mRate;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mLoadingErrorTV = findViewById(R.id.tv_loading_error);
+        mNetworkErrorTV = findViewById(R.id.tv_network_error);
+        mInputErrorTV = findViewById(R.id.tv_input_error);
         mLoadingPB = findViewById(R.id.pb_loading);
         mInputValueET = findViewById(R.id.et_input_curr);
         mBaseCurrSP = findViewById(R.id.sp_base_curr);
@@ -137,10 +139,19 @@ public class MainActivity extends AppCompatActivity
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mInputErrorTV.setVisibility(View.INVISIBLE);
+                mNetworkErrorTV.setVisibility(View.INVISIBLE);
+                mResultTV.setVisibility(View.INVISIBLE);
+
                 if (mBaseCurrSP.getSelectedItemPosition() != 0
                         && mDestCurrSP.getSelectedItemPosition() != 0
                         && !TextUtils.isEmpty(mInputValueET.getText())){
                     getCurrRates(mBaseCurrSP.getSelectedItem().toString());
+                } else{
+
+                    mInputErrorTV.setVisibility(View.VISIBLE);
+
                 }
 
             }
@@ -188,23 +199,37 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String s) {
         Log.d(TAG, "loader finished loading");
+
         if (s != null) {
-            mLoadingErrorTV.setVisibility(View.INVISIBLE);
-            //mResultBoxTV.setVisibility(View.VISIBLE);
+
+            mInputErrorTV.setVisibility(View.INVISIBLE);
+            mNetworkErrorTV.setVisibility(View.INVISIBLE);
             mRate = CurrUtils.parseCurrConversionResults(s);
             String dest = mDestCurrSP.getSelectedItem().toString();
-            float f = CurrUtils.getConversion(mRate, dest);
-            String user_val = mInputValueET.getText().toString();
-            float user_float = Float.parseFloat(user_val);
+            float rate = CurrUtils.getConversion(mRate, dest);
 
-            float final_float = f * user_float;
-            String final_conversion = Float.toString(final_float);
-            mResultTV.setVisibility(View.VISIBLE);
-            mResultTV.setText(final_conversion);
+            // Check that rate was a non-zero float.
+            if (rate == 0.0){
+                mNetworkErrorTV.setVisibility(View.VISIBLE);
+            } else{
+
+                try{
+                    float initial_value = Float.parseFloat(mInputValueET.getText().toString());
+                    float converted_value = rate * initial_value;
+                    String final_conversion = Float.toString(converted_value);
+                    mResultTV.setVisibility(View.VISIBLE);
+                    mResultTV.setText(final_conversion);
+
+                } catch(Exception e){
+
+                    mInputErrorTV.setVisibility(View.VISIBLE);
+
+                }
+            }
+
 
         } else {
-            mLoadingErrorTV.setVisibility(View.VISIBLE);
-            //mResultBoxTV.setVisibility(View.INVISIBLE);
+            mNetworkErrorTV.setVisibility(View.VISIBLE);
         }
         mLoadingPB.setVisibility(View.INVISIBLE);
     }
