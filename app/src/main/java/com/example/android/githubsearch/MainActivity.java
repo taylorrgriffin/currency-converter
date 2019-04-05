@@ -19,6 +19,9 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<String> {
 
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity
                 "AUD",
                 "JPY",
                 "TRY",
-                "HDK",
+                "HKD",
                 "MYR",
                 "HRK",
                 "CZK",
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity
                 "AUD",
                 "JPY",
                 "TRY",
-                "HDK",
+                "HKD",
                 "MYR",
                 "HRK",
                 "CZK",
@@ -200,6 +203,85 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(@NonNull Loader<String> loader, String s) {
         Log.d(TAG, "loader finished loading");
 
+        String[] nations = new String[]{
+                "BGN",
+                "NZD",
+                "ILS",
+                "RUB",
+                "CAD",
+                "USD",
+                "PHP",
+                "CHF",
+                "AUD",
+                "JPY",
+                "TRY",
+                "HKD",
+                "MYR",
+                "HRK",
+                "CZK",
+                "IDR",
+                "DKK",
+                "NOK",
+                "HUF",
+                "GBP",
+                "MXN",
+                "THB",
+                "ISK",
+                "ZAR",
+                "BRL",
+                "SGD",
+                "PLN",
+                "INR",
+                "KRW",
+                "RON",
+                "CNY",
+                "SEK",
+                "EUR"
+        };
+
+        String[] symbols = new String[]{
+                "лв",
+                "$",
+                "₪",
+                "₱",
+                "$",
+                "$",
+                "₱",
+                "CHF",
+                "$",
+                "¥",
+                "₺",
+                "$",
+                "RM",
+                "kn",
+                "Kč",
+                "Rp",
+                "kr",
+                "kr",
+                "Ft",
+                "£",
+                "$",
+                "฿",
+                "kr",
+                "R",
+                "R$",
+                "$",
+                "zł",
+                "₹",
+                "₩",
+                "lei",
+                "¥",
+                "kr",
+                "€"
+        };
+
+        HashMap<String, String> symbol_map = new HashMap<>();
+
+        for(int i = 0; i< nations.length; i++){
+            symbol_map.put(nations[i], symbols[i]);
+        }
+
+
         if (s != null) {
 
             mInputErrorTV.setVisibility(View.INVISIBLE);
@@ -207,6 +289,7 @@ public class MainActivity extends AppCompatActivity
             mRate = CurrUtils.parseCurrConversionResults(s);
             String dest = mDestCurrSP.getSelectedItem().toString();
             float rate = CurrUtils.getConversion(mRate, dest);
+            String symbol = symbol_map.get(dest);
 
             // Check that rate was a non-zero float.
             if (rate == 0.0){
@@ -218,7 +301,7 @@ public class MainActivity extends AppCompatActivity
                     float converted_value = rate * initial_value;
                     String final_conversion = Float.toString(converted_value);
                     mResultTV.setVisibility(View.VISIBLE);
-                    mResultTV.setText(final_conversion);
+                    mResultTV.setText(symbol + " " + final_conversion);
 
                 } catch(Exception e){
 
