@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.android.githubsearch">
+    package="com.example.android.currencyconverter">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,21 +14,21 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.example.android.currencyconverter.SettingsActivity"
+            android:parentActivityName="com.example.android.currencyconverter.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.example.android.currencyconverter.MainActivity" />
         </activity>
         <activity
             android:name=".RepoDetailActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.example.android.currencyconverter.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.example.android.currencyconverter.MainActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.android.currencyconverter.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
