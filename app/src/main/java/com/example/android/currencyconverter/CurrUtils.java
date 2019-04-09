@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CurrUtils {
     private final static String CURR_SEARCH_BASE_URL = "https://api.exchangeratesapi.io/latest";
@@ -87,5 +89,26 @@ public class CurrUtils {
         } else {
             return null;
         }
+    }
+
+    public static float calculatePercentage(float percentage, float converted_value){
+
+        return percentage * converted_value;
+    }
+
+    public static ArrayList<Float> computePercentages(Float percentage1, Float percentage2, Float percentage3, Float converted_value){
+
+        ArrayList<Float> result = null;
+
+        if (converted_value != null){
+
+            result = new ArrayList<>();
+
+            result.add(calculatePercentage(percentage1, converted_value));
+            result.add(calculatePercentage(percentage2, converted_value));
+            result.add(calculatePercentage(percentage3, converted_value));
+        }
+
+        return result;
     }
 }

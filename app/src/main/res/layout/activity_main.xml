@@ -121,7 +121,63 @@
         android:layout_margin="10dp"
         android:layout_marginTop="15dp"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/btn_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Easy Tip Calculator"
+            android:textColor="#fff"
+            android:background="#115fdd"
+            android:textSize="22sp"
+            android:layout_margin="10dp" />
+
+        <LinearLayout
+            android:id="@+id/sliding_tip_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#fff"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/tv_low_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <TextView
+                android:id="@+id/tv_mid_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <TextView
+                android:id="@+id/tv_high_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
 </LinearLayout>
