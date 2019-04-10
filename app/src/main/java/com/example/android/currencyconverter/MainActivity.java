@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity
         mHighPercentageTV = findViewById(R.id.tv_high_percentage);
         mSlidingTipViewLL = findViewById(R.id.sliding_tip_view);
 
+        mSlidingTipViewLL.setVisibility(View.INVISIBLE);
+
         //Populate Spinners with conversion options.
         String[] baseItems = new String[]{
                 "From:",
@@ -385,6 +387,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onSlideViewButtonClick(View view) {
+        // View initially inivisible; set to visable upon instansiation
+        if (view.getVisibility() == View.INVISIBLE){
+            view.setVisibility(View.VISIBLE);
+        }
         if (isUp) {
             slideDown(mSlidingTipViewLL);
             mTipButtonBT.setText("Easy Tip Calculator");
